@@ -4,6 +4,7 @@ import {
     loadTodosSuccess,
     loadTodoFailure,
     createTodo,
+    completeTodo,
     removeTodo
 } from "./actions"
 
@@ -23,7 +24,7 @@ export const loadTodos = () => async (dispatch, getState) => {
 
 export const addTodoRequest = text => async dispatch => {
     try {
-        const body = JOSN.stringify({ text })
+        const body = JSON.stringify({ text })
         const response = await fetch('http://localhost:8080/todos', {
             headers: {
                 'Content-Type': 'application/json',
@@ -51,7 +52,17 @@ export const removeTodoRequest = id => async dispatch => {
     }
 }
 
-// TODO: markTodoAsCompletedRequest
+export const completedTodoRequest = id => async dispatch => {
+    try {
+        const response = await fetch(`http://localhost:8080/todos/${id}/completed`, {
+            method: 'post'
+        })
+        const completedTodo = await response.json()
+        dispatch(completeTodo(completedTodo))
+    } catch (e) {
+        dispatch(displayAlert(e))
+    }
+}
 
 export const displayAlert = (text) => {
     alert(`You have an error: ` + text)

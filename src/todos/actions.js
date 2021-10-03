@@ -4,6 +4,12 @@ export const createTodo = todo => ({
     payload: { todo }
 })
 
+export const COMPLETE_TODO = 'COMPLETE_TODO'
+export const completeTodo = todo => ({
+    type: COMPLETE_TODO,
+    payload: { todo }
+})
+
 export const REMOVE_TODO = 'REMOVE_TODO'
 export const removeTodo = todo => ({
     type: REMOVE_TODO,

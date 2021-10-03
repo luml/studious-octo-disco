@@ -1,5 +1,6 @@
 import {
     CREATE_TODO,
+    COMPLETE_TODO,
     REMOVE_TODO,
     LOAD_TODOS_IN_PROGRESS,
     LOAD_TODOS_SUCCESS,
@@ -17,6 +18,18 @@ export const todos = (state = initialState, action) => {
             return {
                 ...state,
                 data: state.data.concat(todo)
+            }
+        }
+        case COMPLETE_TODO: {
+            const { todo: updatedTodo } = payload
+            return {
+                ...state,
+                data: state.data.map(todo => {
+                    if(todo.id === updatedTodo.id) {
+                        return updatedTodo
+                    }
+                    return todo
+                })
             }
         }
         case REMOVE_TODO: {

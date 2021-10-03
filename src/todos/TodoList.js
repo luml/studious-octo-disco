@@ -3,11 +3,16 @@ import { connect } from "react-redux"
 import TodoListItem from './TodoListItem'
 import NewTodoForm from "./NewTodoForm"
 import { displayAlert } from "./thunks"
-import { getTodos, getTodosLoading } from "./selectors"
-import { loadTodos, removeTodoRequest } from "./thunks"
+import {
+    getTodos,
+    getTodosLoading,
+    getCompletedTodos,
+    getIncompleteTodos
+} from "./selectors"
+import { loadTodos, removeTodoRequest, completedTodoRequest } from "./thunks"
 import './TodoList.css'
 
-const TodoList = ({ todos = [], onRemovePressed, isLoading, startLoadingTodos }) => {
+const TodoList = ({ completedTodos, incompletedTodos, onCompletedPressed, onRemovePressed, isLoading, startLoadingTodos }) => {
     useEffect(() => {
         startLoadingTodos()
     }, [])
@@ -17,8 +22,10 @@ const TodoList = ({ todos = [], onRemovePressed, isLoading, startLoadingTodos })
         (
             <div className="list-wrapper">
                 <NewTodoForm />
-                {/* TODO: onCompletedPressed */}
-                {todos.map(todo => <TodoListItem todo={todo} onRemovePressed={onRemovePressed} />)}
+                <h3>Incompleted:</h3>
+                {incompletedTodos.map(todo => <TodoListItem key={todo.id} todo={todo} onRemovePressed={onRemovePressed} onCompletedPressed={onCompletedPressed} />)}
+                <h3>Completed:</h3>
+                {completedTodos.map(todo => <TodoListItem key={todo.id} todo={todo} onRemovePressed={onRemovePressed} />)}
             </div>
 
         )
@@ -27,10 +34,12 @@ const TodoList = ({ todos = [], onRemovePressed, isLoading, startLoadingTodos })
 
 const mapStateProps = state => ({
     todos: getTodos(state),
-    isLoading: getTodosLoading(state)
+    completedTodos: getCompletedTodos(state),
+    incompletedTodos: getIncompleteTodos(state)
 })
 
 const mapDispatchToProps = dispatch => ({
+    onCompletedPressed: id => dispatch(completedTodoRequest(id)),
     onRemovePressed: id => dispatch(removeTodoRequest(id)),
     onDisplayAlertClicked: () => dispatch(displayAlert),
     startLoadingTodos: () => dispatch(loadTodos)
