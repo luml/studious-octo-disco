@@ -4,10 +4,11 @@ import storage from 'redux-persist/lib/storage'
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2"
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { todos } from './todos/reducers'
+import { todos, isLoading } from './todos/reducers'
 
 const reducers = {
-    todos
+    todos,
+    isLoading
 }
 
 const persistConfig = {
@@ -19,7 +20,7 @@ const persistConfig = {
 const rootReducer = combineReducers(reducers)
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-// TODO use thunk for actions ?
+// TODO use thunk for actions ? add some thunks
 const configureStore = () =>
     createStore(
         persistedReducer,
