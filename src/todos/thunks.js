@@ -42,6 +42,8 @@ export const addTodoRequest = text => async dispatch => {
 
 export const removeTodoRequest = id => async dispatch => {
     try {
+        // TODO CORS request did not succeed Reason
+        // As of Firefox 68, https pages are not permitted to access http://localhost
         const response = await fetch(`http://localhost:8080/todos/${id}`, {
             method: 'delete'
         })
